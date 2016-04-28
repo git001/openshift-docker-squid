@@ -23,7 +23,7 @@ EXPOSE 3128/tcp
 
 COPY containerfiles/ /
 
-#ENTRYPOINT ["/usr/sbin/squid"]
-#CMD ["-f","/etc/squid/squid.conf","-N"]
+ENTRYPOINT ["/usr/sbin/squid"]
+CMD ["-f","/etc/squid/squid.conf","-N"]
 
-CMD ["/bin/sh","-c","while true; do echo hello world; sleep 30; done"]
+#CMD ["/bin/sh","-c","while true; do echo hello world; sleep 30; done"]
