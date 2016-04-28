@@ -18,7 +18,7 @@ RUN squid -v
 
 EXPOSE 3128/tcp
 
-#ENTRYPOINT ["squid"]
+#ENTRYPOINT ["/usr/sbin/squid"]
 #CMD ["-f","/etc/squid/squid.conf","-N"]
 
 CMD ["/bin/sh","-c","while true; do echo hello world; sleep 30; done"]
