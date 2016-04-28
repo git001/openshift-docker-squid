@@ -11,7 +11,9 @@ RUN set -x \
     && chown -R 1001:1001 /etc/squid \
     && chown -R 1001:1001 /var/log/squid \
     && chmod -R 775 /var/log/squid \
-    && chmod 777  /var/run/
+    && chmod 777  /var/run/ \
+    && mkdir /data \
+    && chmod 777 /data
 
 USER 1001
 
