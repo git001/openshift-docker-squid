@@ -18,6 +18,8 @@ RUN squid -v
 
 EXPOSE 3128/tcp
 
+COPY containerfiles/ /
+
 #ENTRYPOINT ["/usr/sbin/squid"]
 #CMD ["-f","/etc/squid/squid.conf","-N"]
 
