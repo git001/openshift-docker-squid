@@ -1,5 +1,5 @@
-#FROM rhel7:latest
-FROM base-centos7:latest
+FROM registry.access.redhat.com/rhel7:latest
+#FROM base-centos7:latest
 
 ENV SQUID_CACHE_DIR=/var/spool/squid \
     SQUID_LOG_DIR=/var/log/squid 
