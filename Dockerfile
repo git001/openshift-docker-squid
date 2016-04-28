@@ -23,5 +23,9 @@ EXPOSE 8080/tcp
 
 COPY containerfiles/ /
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+#ENTRYPOINT ["/docker-entrypoint.sh"]
+
+ENTRYPOINT ["/usr/sbin/squid"]
+CMD ["-f","/etc/squid/squid.conf","-N"]
+
 #CMD ["/bin/sh","-c","while true; do echo hello world; sleep 30; done"]
