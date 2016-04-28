@@ -11,7 +11,7 @@ RUN set -x \
     && chown -R 1001:1001 /var/log/squid \
     && chmod -R 775 /var/log/squid
 
-USER 1001
+#USER 1001
 
 RUN squid -v
 
