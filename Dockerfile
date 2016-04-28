@@ -10,7 +10,7 @@ RUN set -x \
     && yum -y clean all \
     && chown -R 1001:1001 /etc/squid \
     && chown -R 1001:1001 /var/log/squid \
-    && chmod -R 775 /var/log/squid \
+    && chmod -R 777 /var/log/squid \
     && chmod 777  /var/run/ \
     && mkdir /data \
     && chmod 777 /data
