@@ -1,6 +1,6 @@
-cache_peer default-http-proxy.pink.ap-southeast-1.aws.openpaas.axa-cloud.com parent 8888 0 no-query no-digest
+cache_peer ${UPSTREAM} parent 8888 0 no-query no-digest
 
-http_port 3128
+http_port 8080
 
 acl whitelist dstdomain "/data/openshift-docker-squid/containerfiles/etc/squid/sites.whitelist.txt"
 #acl UsersGroupA proxy_auth "/etc/squid/groupa.txt"
