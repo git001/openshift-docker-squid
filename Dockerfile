@@ -5,6 +5,7 @@ ENV SQUID_CACHE_DIR=/var/spool/squid \
     SQUID_LOG_DIR=/var/log/squid
 
 RUN set -x \
+    && yum repolist all \
     && yum -y install squid gettext \
     && yum -y update \
     && yum -y clean all \
