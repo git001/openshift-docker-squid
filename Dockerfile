@@ -5,7 +5,7 @@ ENV SQUID_CACHE_DIR=/var/spool/squid \
     SQUID_LOG_DIR=/var/log/squid
 
 RUN set -x \
-    && yum -y install squid gettext-base \
+    && yum -y install squid gettext \
     && yum -y update \
     && yum -y clean all \
     && chown -R 1001:1001 /etc/squid \
