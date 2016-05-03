@@ -8,10 +8,11 @@ RUN set -x \
     && yum -y install squid gettext socat lsof strace\
     && yum -y update \
     && yum -y clean all \
+    && echo |socat -u - unix-listen:/dev/log,unlink-close=0 \
     && chown -R 1001:1001 /etc/squid \
     && chown -R 1001:1001 /var/log/squid \
     && chmod -R 777 /var/log/squid \
-    && chmod 777  /var/run/ \
+    && chmod 777  /var/run/  \
     && mkdir /data \
     && chmod 777 /data
 
