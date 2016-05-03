@@ -5,8 +5,7 @@ ENV SQUID_CACHE_DIR=/var/spool/squid \
     SQUID_LOG_DIR=/var/log/squid
 
 RUN set -x \
-    && yum repolist all \
-    && yum -y install squid gettext \
+    && yum -y install squid gettext rsyslog \
     && yum -y update \
     && yum -y clean all \
     && chown -R 1001:1001 /etc/squid \
@@ -26,7 +25,7 @@ COPY containerfiles/ /
 
 #ENTRYPOINT ["/docker-entrypoint.sh"]
 
-ENTRYPOINT ["/usr/sbin/squid"]
-CMD ["-f","/etc/squid/squid.conf","-N"]
+#ENTRYPOINT ["/usr/sbin/squid"]
+#CMD ["-f","/etc/squid/squid.conf","-N"]
 
-#CMD ["/bin/sh","-c","while true; do echo hello world; sleep 30; done"]
+CMD ["/bin/sh","-c","while true; do echo hello world; sleep 30; done"]
