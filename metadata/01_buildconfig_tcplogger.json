@@ -54,7 +54,7 @@
                     "type": "Docker",
                     "dockerStrategy": {
                         "from": {
-                            "kind": "ImageStreamTag",
+                            "kind": "DockerImage",
                             "name": "alpine:latest"
                         },
                         "env": [
