@@ -4,11 +4,8 @@ access_log ${TCPLOGGER_PORT} squid
 http_port 8080
 never_direct allow all
 
-acl whitelist dstdomain "/data/openshift-docker-squid/containerfiles/etc/squid/sites.whitelist.txt"
-#acl UsersGroupA proxy_auth "/etc/squid/groupa.txt"
-#acl SitesGroupA dstdomain "/etc/squid/sites.a.txt"
-#acl UsersGroupB proxy_auth "/etc/squid/groupb.txt"
-#acl SitesGroupB dstdomain "/etc/squid/sites.b.txt"
+acl whitelist dstdomain "${WHITELIST_FILE}"
+
 acl http proto http
 acl port_80 port 80
 acl port_443 port 443
