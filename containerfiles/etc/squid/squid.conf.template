@@ -2,6 +2,7 @@ cache_peer ${UPSTREAM} parent 8888 0 no-query no-digest
 access_log ${TCPLOGGER_PORT_8514_TCP_PROTO}://${TCPLOGGER_PORT_8514_TCP_ADDR}:${TCPLOGGER_PORT_8514_TCP_PORT} squid
 
 http_port 8080
+never_direct allow all
 
 acl whitelist dstdomain "/data/openshift-docker-squid/containerfiles/etc/squid/sites.whitelist.txt"
 #acl UsersGroupA proxy_auth "/etc/squid/groupa.txt"
@@ -17,7 +18,6 @@ acl CONNECT method CONNECT
 acl SSL_ports port 443
 acl Safe_ports port 80		# http
 acl Safe_ports port 443		# https
-acl CONNECT method CONNECT
 
 # rules allowing non-authenticated users
 http_access allow http port_80 whitelist
