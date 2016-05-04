@@ -1,0 +1,211 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "tcplogger",
+        "creationTimestamp": null
+    },
+    "objects": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "tcplogger",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "tcplogger"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "tcplogger"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "tcplogger:latest",
+								"namespace": "default-http-proxy"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "tcplogger",
+                    "deploymentconfig": "tcplogger"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "tcplogger",
+                            "deploymentconfig": "tcplogger"
+                        },
+                        "annotations": {
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "tcplogger",
+                                "image": "tcplogger:latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 8514,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {}
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "default-http-proxy",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "default-http-proxy"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "default-http-proxy"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "default-http-proxy:latest",
+								"namespace": "default-http-proxy"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "default-http-proxy",
+                    "deploymentconfig": "default-http-proxy"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "default-http-proxy",
+                            "deploymentconfig": "default-http-proxy"
+                        },
+                        "annotations": {
+                            "openshift.io/container.default-http-proxy.image.entrypoint": "[\"/usr/bin/bash\"]",
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "default-http-proxy",
+                                "image": "default-http-proxy:latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "UPSTREAM",
+                                        "value": "${UPSTREAM}"
+                                    },
+                                    {
+                                        "name": "TZ",
+                                        "value": "UTC"
+                                    },
+                                    {
+                                        "name": "WHITELIST_FILE",
+                                        "value": "${WHITELIST_FILE}"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {}
+        }
+    ],
+	"parameters": [
+        {
+            "name": "WHITELIST_FILE",
+			"displayName": "WHITELIST File",
+			"description": "The location of the whitelist file in the container",
+			"required": true
+		},
+		{
+		    "name": "UPSTREAM",
+			"displayName": "UPSTREAM Proxy",
+			"description": "The UPSTREAM proxy",
+			"required": true
+		}
+	]
+}
