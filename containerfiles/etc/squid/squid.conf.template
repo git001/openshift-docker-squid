@@ -1,0 +1,27 @@
+cache_peer default-http-proxy.pink.ap-southeast-1.aws.openpaas.axa-cloud.com parent 8888 0 no-query no-digest
+
+http_port 8080
+
+acl whitelist dstdomain "/data/openshift-docker-squid/containerfiles/etc/squid/sites.whitelist.txt"
+#acl UsersGroupA proxy_auth "/etc/squid/groupa.txt"
+#acl SitesGroupA dstdomain "/etc/squid/sites.a.txt"
+#acl UsersGroupB proxy_auth "/etc/squid/groupb.txt"
+#acl SitesGroupB dstdomain "/etc/squid/sites.b.txt"
+acl http proto http
+acl port_80 port 80
+acl port_443 port 443
+acl CONNECT method CONNECT
+#acl authenticated_users proxy_auth REQUIRED
+
+# rules allowing non-authenticated users
+http_access allow http port_80 whitelist
+http_access allow CONNECT port_443 whitelist
+
+# rules allowing authenticated users
+#http_access allow http port_80 SitesGroupA UsersGroupA
+#http_access allow CONNECT port_443 SitesGroupA UsersGroupA
+#http_access allow http port_80 SitesGroupB UsersGroupB
+#http_access allow CONNECT port_443 SitesGroupB UsersGroupB
+
+# catch-all rule
+http_access deny all
