@@ -1,0 +1,102 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "tcplogger",
+        "creationTimestamp": null
+    },
+    "objects": [
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "tcplogger",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "tcplogger"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "jfryy5HGR2KMydJYg9qM"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "YBOU3K68Gdj8pzLB2Kvn"
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    }
+                ],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "${GIT_URI}",
+                        "httpProxy": "${HTTP_PROXY}",
+                        "httpsProxy": "${HTTPS_PROXY}"
+                    },
+                    "secrets": null
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "alpine:latest"
+                        },
+                        "env": [
+                            {
+                                "name": "HTTP_PROXY",
+                                "value": "${HTTP_PROXY}"
+                            }
+                        ]
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "tcplogger:latest"
+                    }
+                },
+                "resources": {},
+                "postCommit": {}
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        }
+    ],
+	"parameters": [
+        {
+         "name": "HTTP_PROXY",
+			"displayName": "HTTP Proxy",
+			"description": "The http proxy",
+			"required": true
+		},
+		{
+		    "name": "HTTPS_PROXY",
+			"displayName": "HTTPs Proxy",
+			"description": "The https proxy",
+			"required": true
+		},
+		{
+		    "name": "GIT_URI",
+			"displayName": "GIT URI",
+			"description": "The GIT URI from which the image should be build",
+			"required": true
+		}
+	]
+}
