@@ -131,7 +131,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "name": "default-http-proxy:latest",
-								"namespace": "default-http-proxy"
+				"namespace": "default-http-proxy"
                             }
                         }
                     }
