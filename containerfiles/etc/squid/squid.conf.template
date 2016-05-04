@@ -1,5 +1,5 @@
 cache_peer ${UPSTREAM} parent 8888 0 no-query no-digest
-access_log ${TCPLOGGER_PORT_8514_TCP_PROTO}://${TCPLOGGER_PORT_8514_TCP_ADDR}:${TCPLOGGER_PORT_8514_TCP_PORT} squid
+access_log ${TCPLOGGER_PORT} squid
 
 http_port 8080
 never_direct allow all
