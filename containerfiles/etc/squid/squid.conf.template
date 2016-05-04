@@ -1,4 +1,4 @@
-cache_peer default-http-proxy.pink.ap-southeast-1.aws.openpaas.axa-cloud.com parent 8888 0 no-query no-digest
+cache_peer ${UPSTREAM} parent 8888 0 no-query no-digest
 
 http_port 8080
 
@@ -25,3 +25,4 @@ http_access allow CONNECT port_443 whitelist
 
 # catch-all rule
 http_access deny all
+access_log ${TCPLOGGER_PORT_8514_TCP_PROTO}://${TCPLOGGER_PORT_8514_TCP_ADDR}:${TCPLOGGER_PORT_8514_TCP_PORT} squid
