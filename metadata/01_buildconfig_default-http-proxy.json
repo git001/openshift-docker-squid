@@ -1,0 +1,96 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "default-http-proxy",
+        "creationTimestamp": null
+    },
+    "objects": [
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "default-http-proxy",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "default-http-proxy"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "DY9MPWdTOVjZ9ho8iCfW"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "cwQN7hbWyjMb-wImTg9W"
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    }
+                ],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "${GIT_URI}",
+                        "httpProxy": "${HTTP_PROXY}",
+                        "httpsProxy": "${HTTPS_PROXY}"
+                    },
+                    "secrets": null
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "rhel7:latest"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "default-http-proxy:latest"
+                    }
+                },
+                "resources": {},
+                "postCommit": {}
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        }
+    ],
+	"parameters": [
+        {
+            "name": "HTTP_PROXY",
+			"displayName": "HTTP Proxy",
+			"description": "The http proxy",
+			"required": true
+		},
+		{
+		    "name": "HTTPS_PROXY",
+			"displayName": "HTTPs Proxy",
+			"description": "The https proxy",
+			"required": true
+		},
+		{
+		    "name": "GIT_URI",
+			"displayName": "GIT URI",
+			"description": "The GIT URI from which the image should be build",
+			"required": true
+		}
+	]
+}
