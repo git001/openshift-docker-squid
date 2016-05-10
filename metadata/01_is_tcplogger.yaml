@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+    openshift.io/image.dockerRepositoryCheck: 2016-05-04T08:06:00Z
+  creationTimestamp: null
+  labels:
+    app: tcplogger
+  name: tcplogger
+spec: {}

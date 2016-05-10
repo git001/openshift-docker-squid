@@ -24,7 +24,7 @@ EXPOSE 8080/tcp
 
 COPY containerfiles/ /
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/openshift-entrypoint.sh"]
 
 #ENTRYPOINT ["/usr/sbin/squid"]
 #CMD ["-f","/etc/squid/squid.conf","-N"]

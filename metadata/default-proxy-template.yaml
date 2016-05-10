@@ -1,0 +1,196 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: default-proxy
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: default-http-proxy
+    name: tcplogger
+  spec:
+    ports:
+    - name: 8514-tcp
+      port: 8514
+      protocol: TCP
+      targetPort: 8514
+    selector:
+      app: default-http-proxy
+      deploymentconfig: tcplogger
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: default-http-proxy
+    name: tcplogger
+  spec:
+    replicas: 1
+    selector:
+      app: default-http-proxy
+      deploymentconfig: tcplogger
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: default-http-proxy
+          deploymentconfig: tcplogger
+      spec:
+        containers:
+        - env:
+          - name: TZ
+            value: ${TZ}
+          imagePullPolicy: Always
+          image: tcplogger:latest
+          name: tcplogger
+          ports:
+          - containerPort: 8514
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - tcplogger
+        from:
+          kind: ImageStreamTag
+          name: tcplogger:latest
+          namespace: default-proxy
+      type: ImageChange
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: default-http-proxy
+    name: default-http-proxy
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: default-http-proxy
+      deploymentconfig: default-http-proxy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: default-http-proxy
+    name: default-http-proxy
+  spec:
+    replicas: 1
+    selector:
+      app: default-http-proxy
+      deploymentconfig: default-http-proxy
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: default-http-proxy
+          deploymentconfig: default-http-proxy
+      spec:
+        containers:
+        - env:
+          - name: UPSTREAM
+            value: ${UPSTREAM}
+          - name: TZ
+            value: ${TZ}
+          - name: WHITELIST_FILE
+            value: ${WHITELIST_FILE}
+          - name: WHITELIST_DOMAINS
+            value: ${WHITELIST_DOMAINS}
+          - name: FORCE
+            value: ${FORCE}
+          imagePullPolicy: Always
+          image: default-http-proxy:latest
+          name: default-http-proxy
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - default-http-proxy
+        from:
+          kind: ImageStreamTag
+          name: default-http-proxy:latest
+          namespace: default-proxy
+      type: ImageChange
+  status: {}
+parameters:
+- description: Upstream cache address
+  name: UPSTREAM
+  required: true
+- description: Default time zone
+  name: TZ
+  value: UTC
+- description: The location of the whitelist file in the running Pod. UNIX Format
+  name: WHITELIST_FILE
+  value: /tmp/default_whitelist.txt
+- description: The whitelisted domains with , separated in the running Pod
+  name: WHITELIST_DOMAINS
+  value: "*.github.com,*.axa-tech.com"
+- description: Should the WHITELIST_FILE rewritten with the WHITELIST_DOMAINS when exists
+  name: FORCE
+  value: "false"

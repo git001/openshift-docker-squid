@@ -48,7 +48,10 @@
                         "httpProxy": "${HTTP_PROXY}",
                         "httpsProxy": "${HTTPS_PROXY}"
                     },
-                    "secrets": null
+                    "secrets": null,
+					"sourceSecret": {
+					  "name": "basicsecret"
+					}
                 },
                 "strategy": {
                     "type": "Docker",
