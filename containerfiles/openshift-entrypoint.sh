@@ -23,8 +23,13 @@ if [ x"${WHITELIST_FILE}" = x ];
 fi
 
 if [ x"${WHITELIST_DOMAINS}" != x ]; then
-  for i in $( echo ${WHITELIST_DOMAINS}| sed -e 's/,/ /g') ; do
-    echo $i > ${WHITELIST_FILE}
+
+  if [ -s ${WHITELIST_FILE} ]; then
+    rm -f ${WHITELIST_FILE}
+  fi
+
+  for i in $( echo ${WHITELIST_DOMAINS}| sed -e 's/;/ /g') ; do
+    echo $i >> ${WHITELIST_FILE}
   done
 fi
 

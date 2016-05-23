@@ -45,3 +45,13 @@ if the output looks good you can pipe it to oc create.
 ```
 oc process -f 02_deploymentconfig.json -v WHITELIST_FILE=/data/whitelist -v UPSTREAM=myUps | oc create -f -
 ```
+
+# logger and squid in one pod
+
+```
+oc process -f metadata/02_deploymentconfig_tcplog-and-squid.json \
+    -v WHITELIST='*.google.com;*.google.sg' \
+    -v WHITELIST_FILE='/tmp/my_WHITELIST_FILE.txt' \
+    -v UPSTREAM=${HTTPS_PROXY}
+```
+
