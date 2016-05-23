@@ -1,6 +1,12 @@
-# Build
 
-## TCP logger
+:toc: macro
+:toc-title:
+
+toc::[]
+
+= Build
+
+== TCP logger
 
 ```
 oc process -f 01_buildconfig_tcplogger.json -v HTTP_PROXY=${HTTP_PROXY} \
@@ -17,7 +23,7 @@ oc process -f 01_buildconfig_tcplogger.json -v HTTP_PROXY=${HTTP_PROXY} \
            | oc create -f -
 ```
 
-## HTTP / Squid
+== HTTP / Squid
 
 ```
 oc process -f 01_buildconfig_default-http-proxy.json -v HTTP_PROXY=${HTTP_PROXY} \
@@ -34,7 +40,7 @@ oc process -f 01_buildconfig_default-http-proxy.json -v HTTP_PROXY=${HTTP_PROXY}
            | oc create -f -
 ```
 
-# Deploy
+= Deploy
 
 ```
 oc process -f 02_deploymentconfig.json -v WHITELIST_FILE=/data/whitelist -v UPSTREAM=myUps
@@ -46,7 +52,7 @@ if the output looks good you can pipe it to oc create.
 oc process -f 02_deploymentconfig.json -v WHITELIST_FILE=/data/whitelist -v UPSTREAM=myUps | oc create -f -
 ```
 
-# logger and squid in one pod
+= logger and squid in one pod
 
 ```
 oc process -f metadata/02_deploymentconfig_tcplog-and-squid.json \
